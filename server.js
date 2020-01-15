@@ -13,7 +13,22 @@ app.post('/execute', (req, res) => {
         throw new Error('No Code Specified!');
     } else {
         console.log(req.body.code);
-        res.send('Hello World!');
+        let html = `
+            <html>
+                <head><head>
+                <body>
+                    <script>${req.body.code}</script>
+                </body>
+            </html>
+        `;
+        fs.writeFileSync(__dirname + '/file/index.html', html, (err) => {
+            if(err) {
+                res.send('Could not write code into the filesystem');
+                throw err;
+            }
+            console.log('Code written to file(index.html)');
+        });
+        res.sendFile(__dirname + '/file/index.html');
     }
     
 });
