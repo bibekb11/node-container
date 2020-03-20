@@ -1,11 +1,19 @@
-const app = require('express')();
+const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+
+const app = express();
 
 const PORT = 8080;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static(__dirname + "/file"));
+
+app.get('/index.html', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+})
 
 app.post('/execute', (req, res) => {
     if(!req.body.code) {
